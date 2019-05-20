@@ -1,0 +1,11 @@
+{
+  "name": "rails-react-tutorial",
+  "private": true,
+  "dependencies": {
+    "@rails/webpacker": "^4.0.2",
+    "react_ujs": "^2.5.0"
+  },
+  "devDependencies": {
+    "webpack-dev-server": "^3.4.1"
+  }
+}
