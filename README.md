@@ -4,3 +4,8 @@ Setup/ macOS
 
 * brew install yarn
 
+Start webpack dev server: 
+
+./bin/webpack-dev-server
+
+
