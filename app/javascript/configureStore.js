@@ -1,8 +1,9 @@
+import LOAD_ITEMS from 'actions/actionTypes'
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
 const initialState = {
-    things: [
+    items: [
         {
             name: "test",
             guid: "12345"
@@ -13,17 +14,18 @@ const initialState = {
 function rootReducer(state, action) {
     console.log(action.type);
     switch (action.type) {
-        case "GET_THINGS_SUCCESS":
-            return {things: action.json.things};
+        case LOAD_ITEMS:
+            return action.items;
     }
-    return state
-};
+    debugger;
+    return state;
+}
 
 export default function configureStore() {
-    const store = createStore(
+    return store = createStore(
         rootReducer,
         initialState,
         applyMiddleware(thunk)
     );
-    return store;
 }
+

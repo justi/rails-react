@@ -1,50 +1,60 @@
 import React from "react"
 import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
-// import PropTypes from "prop-types"
-const GET_THINGS_REQUEST = 'GET_THINGS_REQUEST';
-const GET_THINGS_SUCCESS = 'GET_THINGS_SUCCESS';
+import axios from 'axios';
 
-
-function getThings() {
-  console.log('getThings() Action!');
-    return dispatch => {
-      dispatch({type: GET_THINGS_REQUEST });
-      return fetch('v1/things.json')
-          .then(response => response.json())
-          .then(json => dispatch(getThingsSuccess(json)))
-          .catch(error => console.log(error));
-    };
-}
-
-export function getThingsSuccess(json) {
-    return {
-        type: GET_THINGS_SUCCESS,
-        json
-    };
-};
+import loadItems from '../actions/actionCreators'
 
 class HelloWorld extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    getItems = () => {
+        console.log('getThings() Action!');
+        axios.get('v1/things')
+            .then(response => {
+                this.props.dispatch(loadItems(response.data));
+            })
+            .catch(error => console.log(error))
+    };
+
+    searchItems = (e) => {
+        if (e.key === 'Enter' && !(this.getSearchTerms.value === ''))
+            {
+                axios.get('v1/things.json/' + this.getSearchTerms.value)
+                    .then(response => {
+                        this.props.dispatch(loadItems(response.data));
+                    })
+                    .catch(error => console.log(error))
+            }
+    };
+    componentDidMount() {
+        this.getItems();
+    };
   render () {
-    const { things } = this.props;
-    const thingsList = things.map((thing) => {
-      return <li>{thing.name} {thing.guid}</li>
-    })
+    const thingsList = this.props.items.map((item) => {
+      return <li>{item.name} {item.guid}</li>
+    });
 
     return (
       <React.Fragment>
-        Greeting: {this.props.greeting}
-        <button className="getThingsBtn" onClick={() => this.props.getThings()}>getThings</button>
-        <br/>
-        <ul>{thingsList}</ul>
+            Greeting: {this.props.greeting}
+            <button className="getThingsBtn" onClick={() => this.getItems()}>getItems</button>
+            <br/>
+            <ul>{thingsList}</ul>
+          <div className="inputContainer">
+              <input className="searchInput" type="text" placeholder="Search" maxLength="50"
+                     onKeyPress={this.searchItems} ref={(input)=>this.getSearchTerms = input} />
+          </div>
       </React.Fragment>
     );
   }
 }
 
-const structuredSelector = createStructuredSelector({
-    things: state => state.things,
-});
-
-const mapDispatchToProps = { getThings };
-export default connect(structuredSelector, mapDispatchToProps)(HelloWorld);
+const mapStateToProps = (state) => {
+    return {
+        items: state.items
+    }
+};
+export default connect(mapStateToProps)(HelloWorld);
