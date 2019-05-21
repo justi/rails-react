@@ -22,10 +22,12 @@ function rootReducer(state, action) {
 }
 
 export default function configureStore() {
-    return store = createStore(
+    const store = createStore(
         rootReducer,
         initialState,
         applyMiddleware(thunk)
     );
+
+    return store;
 }
 
