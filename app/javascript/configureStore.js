@@ -15,7 +15,7 @@ function rootReducer(state, action) {
     console.log(action.type);
     switch (action.type) {
         case LOAD_ITEMS:
-            return action.items;
+            return {items: action.items};
     }
     debugger;
     return state;

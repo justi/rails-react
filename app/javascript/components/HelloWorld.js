@@ -20,14 +20,15 @@ class HelloWorld extends React.Component {
     };
 
     searchItems = (e) => {
-        if (e.key === 'Enter' && !(this.getSearchTerms.value === ''))
-            {
-                axios.get('v1/things.json/' + this.getSearchTerms.value)
-                    .then(response => {
-                        this.props.dispatch(loadItems(response.data));
-                    })
-                    .catch(error => console.log(error))
-            }
+        if (e.key === 'Enter' && !(this.getSearchTerms.value === '')) {
+            axios.get('v1/things', {
+                params: {
+                    search: this.getSearchTerms.value
+                }
+            }).then(response => {
+                    this.props.dispatch(loadItems(response.data))
+            }).catch(error => console.log(error))
+        }
     };
     componentDidMount() {
         this.getItems();
