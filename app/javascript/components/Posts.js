@@ -24,7 +24,7 @@ class Posts extends React.Component {
     };
 
     searchPosts = (e) => {
-        if (e.key === 'Enter' && !(this.getSearchTerms.value === '')) {
+        if (e.key === 'Enter') {
             axios.get('v1/posts', {
                 params: {
                     s: this.getSearchTerms.value
@@ -57,7 +57,6 @@ class Posts extends React.Component {
                 </div>
             );
         });
-
 
         return (
             <React.Fragment>
