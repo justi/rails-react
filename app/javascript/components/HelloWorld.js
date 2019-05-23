@@ -2,13 +2,9 @@ import React from "react"
 import { connect } from "react-redux";
 import axios from 'axios';
 
-import loadItems from '../actions/actionCreators'
+import { loadItems } from '../actions'
 
 class HelloWorld extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
 
     getItems = () => {
         console.log('getThings() Action!');
