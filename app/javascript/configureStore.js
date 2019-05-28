@@ -1,4 +1,4 @@
-import { LOAD_ITEMS, LOAD_POSTS } from "actions.js";
+import { LOAD_ITEMS, LOAD_POSTS, TOGGLE_CHECKBOX } from "actions.js";
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import "../../node_modules/bootstrap/dist/css/bootstrap.min.css"
@@ -9,16 +9,33 @@ const initialState = {
             name: "test",
             guid: "12345"
         }
-    ]
+    ],
+    posts: {
+        posts: [],
+        searchBoth: true
+    }
 };
 
 function rootReducer(state = [], action) {
-    console.log(action.type);
     switch (action.type) {
         case LOAD_ITEMS:
-            return {items: action.items};
+            return Object.assign({}, state, {items: action.items});
         case LOAD_POSTS:
-            return {posts: action.posts};
+            return {
+                ...state,
+                posts: {
+                    ...state.posts,
+                    posts: action.posts
+                }
+            }
+        case TOGGLE_CHECKBOX:
+            return {
+                ...state,
+                posts: {
+                    ...state.posts,
+                    searchBoth: !state.posts.searchBoth
+                }
+            }
     }
     return state;
 }
